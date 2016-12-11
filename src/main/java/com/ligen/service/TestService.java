@@ -1,4 +1,4 @@
-package com.ligen.controller;
+package com.ligen.service;
 
 import org.springframework.stereotype.Service;
 
