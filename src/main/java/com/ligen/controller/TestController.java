@@ -1,5 +1,6 @@
 package com.ligen.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,9 @@ public class TestController {
     //@Autowired
 //    RedisTemplate<String, Serializable> redisTemplate ;
 
+    @Autowired
+    TestService service;
+
     public TestController() {
         System.out.println("TestController");
     }
@@ -19,7 +23,7 @@ public class TestController {
     @RequestMapping("/foo")
     @ResponseBody
     public String handleFoo() {
-        return "Hello world";
+        return service.hello();
     }
 
     @RequestMapping(value="/foo2",method= RequestMethod.POST)

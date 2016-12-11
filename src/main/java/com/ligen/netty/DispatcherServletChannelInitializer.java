@@ -1,4 +1,4 @@
-package com.ligen;
+package com.ligen.netty;
 
 
 import io.netty.channel.ChannelInitializer;
