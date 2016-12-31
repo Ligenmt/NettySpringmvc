@@ -32,7 +32,7 @@ public class DispatcherServletChannelInitializer extends ChannelInitializer<Sock
         MockServletConfig servletConfig = new MockServletConfig(servletContext);
         servletConfig.addInitParameter("contextConfigLocation", "classpath:applicationContext.xml");
         servletContext.addInitParameter("contextConfigLocation", "classpath:applicationContext.xml");
-
+        System.out.println("classpath");
         XmlWebApplicationContext wac = new XmlWebApplicationContext();
         wac.setServletContext(servletContext);
         wac.setServletConfig(servletConfig);

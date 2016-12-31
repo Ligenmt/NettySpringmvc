@@ -19,11 +19,9 @@ public class BootStrap {
 
     public void run() throws Exception {
         ServerBootstrap server = new ServerBootstrap();
-
+        
         try {
-            server.group(new NioEventLoopGroup(), new NioEventLoopGroup())
-                    .channel(NioServerSocketChannel.class).
-                    localAddress(port)
+            server.group(new NioEventLoopGroup(), new NioEventLoopGroup()).channel(NioServerSocketChannel.class).localAddress(port)
                     .childHandler(new DispatcherServletChannelInitializer());
             System.out.println("bootstrap start");
             server.bind().sync().channel().closeFuture().sync();
@@ -41,6 +39,6 @@ public class BootStrap {
         } else {
             port = 8080;
         }
-        new BootStrap(port).run();
+        new BootStrap(8080).run();
     }
 }

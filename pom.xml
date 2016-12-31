@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ligen</groupId>
     <artifactId>nettyspringmvc</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>nettyspringmvc Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <properties>
-        <org.springframework-version>3.1.1.RELEASE</org.springframework-version>
+        <!-- <org.springframework-version>3.1.1.RELEASE</org.springframework-version> -->
         <!--<netty-version>4.0.0.Alpha8</netty-version>-->
         <netty-version>4.0.0.Final</netty-version>
     </properties>
@@ -38,6 +38,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+            <version>4.1.4.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
             <version>4.1.4.RELEASE</version>
         </dependency>
         <dependency>
@@ -81,9 +86,31 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+        
+        
+        <dependency>
+        <groupId>net.wecash.datacenter</groupId>
+        <artifactId>wecash-datacenter-dao</artifactId>
+        <version>0.9.6</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>nettyspringmvc</finalName>
+        <plugins>
+			<plugin>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<configuration>
+			    <archive>
+			        <manifest>
+			            <mainClass>com.ligen.netty.BootStrap</mainClass> 
+			        </manifest>
+			    </archive>
+			    <descriptorRefs>
+			        <descriptorRef>jar-with-dependencies</descriptorRef>
+			    </descriptorRefs>
+			</configuration>
+			</plugin>  
+        </plugins>
     </build>
 
 

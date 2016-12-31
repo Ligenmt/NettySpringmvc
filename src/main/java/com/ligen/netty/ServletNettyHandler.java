@@ -67,15 +67,14 @@ public class ServletNettyHandler extends SimpleChannelInboundHandler<HttpRequest
         }
 
         byte[] contentAsBytes = servletResponse.getContentAsByteArray();
+        String str = servletResponse.getContentAsString();
         if(contentAsBytes.length == 0) {
-            FullHttpResponse fullresponse = new DefaultFullHttpResponse(HTTP_1_1,
-                    OK, Unpooled.wrappedBuffer("invalid request".getBytes("UTF-8")));
+            FullHttpResponse fullresponse = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer("无效的请求".getBytes("UTF-8")));
             fullresponse.headers().set(CONTENT_TYPE, "text/plain");
             fullresponse.headers().set(CONTENT_LENGTH, fullresponse.content().readableBytes());
             ctx.write(fullresponse);
             ctx.flush();
         } else {
-            ctx.write(response);
             InputStream contentStream = new ByteArrayInputStream(contentAsBytes);
             ChannelFuture writeFuture = ctx.write(new ChunkedStream(contentStream));
             writeFuture.addListener(ChannelFutureListener.CLOSE);
