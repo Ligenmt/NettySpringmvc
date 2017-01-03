@@ -55,7 +55,14 @@ public class ServletNettyHandler extends SimpleChannelInboundHandler<HttpRequest
         System.out.println("request received");
         MockHttpServletRequest servletRequest = createServletRequest(request);
         MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-        this.servlet.service(servletRequest, servletResponse);
+        
+        
+        try {
+			this.servlet.service(servletRequest, servletResponse);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		} 
+        
 
         HttpResponseStatus status = HttpResponseStatus.valueOf(servletResponse.getStatus());
         HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
@@ -67,9 +74,9 @@ public class ServletNettyHandler extends SimpleChannelInboundHandler<HttpRequest
         }
 
         byte[] contentAsBytes = servletResponse.getContentAsByteArray();
-        String str = servletResponse.getContentAsString();
+//        String str = servletResponse.getContentAsString();
         if(contentAsBytes.length == 0) {
-            FullHttpResponse fullresponse = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer("无效的请求".getBytes("UTF-8")));
+            FullHttpResponse fullresponse = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer("invalid request".getBytes("UTF-8")));
             fullresponse.headers().set(CONTENT_TYPE, "text/plain");
             fullresponse.headers().set(CONTENT_LENGTH, fullresponse.content().readableBytes());
             ctx.write(fullresponse);
@@ -134,12 +141,6 @@ public class ServletNettyHandler extends SimpleChannelInboundHandler<HttpRequest
     private static void sendError(ChannelHandlerContext ctx, HttpResponseStatus status) {
         HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, status);
         response.headers().add(io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
-//        response.setHeader(io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
-//        response.setContent(Unpooled.copiedBuffer(
-//                "Failure: " + status.toString() + "\r\n",
-//                CharsetUtil.UTF_8));
-
-        // Close the connection as soon as the error message is sent.
         ctx.write(response).addListener(ChannelFutureListener.CLOSE);
 
     }
